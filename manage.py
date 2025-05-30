@@ -31,12 +31,12 @@ def _get_all_zip_files(rootdirname, dirname):
 
 def _get_zip_files(dirname):
     zip_files = []
-    for root, dirs, files in dirname.walk(top_down=True):
-        if root.name == '':
-            for name in [n for n in dirs if n in FOR_ZIP_DIRNAMES]:
-                zip_files += _get_all_zip_files(root, Path(name))
-            for name in [n for n in files if n in FOR_ZIP_FILENAMES]:
-                zip_files += [path.join(root, name)]
+    for _root, _dirs, _files in dirname.walk(top_down=True):
+        if _root.name == '':
+            for name in [n for n in _dirs if n in FOR_ZIP_DIRNAMES]:
+                zip_files += _get_all_zip_files(_root, Path(name))
+            for name in [n for n in _files if n in FOR_ZIP_FILENAMES]:
+                zip_files += [path.join(_root, name)]
     return zip_files
 
 
