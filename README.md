@@ -55,7 +55,7 @@ pip install -r requirements.txt
 Файл .env может иметь любое имя, чтобы скрипт настройки использовал файл
 необходимо имя файла передать в исполняемый скрипт, указав значение в переменной окружения *ENV_FILENAME*
 ```shell
-export ENV_FILENAME="./settings.env"
+export ENV_FILENAME="./.env/settings.env"
 ```
 Пример заполнения файла настроек:
 ```dotenv
