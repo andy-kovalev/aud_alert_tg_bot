@@ -1,0 +1,10 @@
+-r requirements.txt
+flake8
+pytest
+pytest-asyncio
+pytest-cov
+# aiogram-tests
+# pytest-mongo==3.1.0
+# fake
+# mongomock
+# pandas
