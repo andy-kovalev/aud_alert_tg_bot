@@ -22,10 +22,10 @@ def parse_args(args):
 
 def _get_all_zip_files(rootdirname, dirname):
     zip_files = []
-    for root, dirs, files in dirname.walk(top_down=True):
-        if not str(root).startswith('_') and not str(root).endswith('_'):
-            for name in files:
-                zip_files += [path.join(rootdirname, root, name)]
+    for _root, _dirs, _files in dirname.walk(top_down=True):
+        if not str(_root).startswith('_') and not str(_root).endswith('_'):
+            for name in _files:
+                zip_files += [path.join(rootdirname, _root, name)]
     return zip_files
 
 
