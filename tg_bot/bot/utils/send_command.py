@@ -9,10 +9,10 @@ async def _command(command_param: str):
     try:
         command_text = settings.__dict__[command_param]
     except Exception:
-        raise ChildProcessError(f'Ошибка получения параметра {command_param if command_param else ''}')
+        raise ChildProcessError(f"Ошибка получения параметра {command_param if command_param else ''}")
 
     if not command_text or not command_text.strip():
-        raise ChildProcessError(f'Не указан параметр {command_param if command_param else ''}')
+        raise ChildProcessError(f"Не указан параметр {command_param if command_param else ''}")
 
     try:
         subprocess.run(shlex.split(command_text), encoding='utf-8')
