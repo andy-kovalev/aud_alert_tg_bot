@@ -20,27 +20,28 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
+def _get_all_zip_files(rootdirname, dirname):
+    zip_files = []
+    for root, dirs, files in dirname.walk(top_down=True):
+        if not str(root).startswith('_') and not str(root).endswith('_'):
+            for name in files:
+                zip_files += [path.join(rootdirname, root, name)]
+    return zip_files
+
+
+def _get_zip_files(dirname):
+    zip_files = []
+    for root, dirs, files in dirname.walk(top_down=True):
+        if root.name == '':
+            for name in [n for n in dirs if n in FOR_ZIP_DIRNAMES]:
+                zip_files += _get_all_zip_files(root, Path(name))
+            for name in [n for n in files if n in FOR_ZIP_FILENAMES]:
+                zip_files += [path.join(root, name)]
+    return zip_files
+
+
 def make_zip_file(filename: str):
-    def get_all_zip_files(rootdirname, dirname):
-        zip_files = []
-        for root, dirs, files in dirname.walk(top_down=True):
-            if not str(root).startswith('_') and not str(root).endswith('_'):
-                for name in files:
-                    zip_files += [path.join(rootdirname, root, name)]
-        return zip_files
-
-    def get_zip_files(dirname):
-        zip_files = []
-        for root, dirs, files in dirname.walk(top_down=True):
-            if root.name == '':
-                for name in [n for n in dirs if n in FOR_ZIP_DIRNAMES]:
-                    zip_files += get_all_zip_files(root, Path(name))
-                for name in [n for n in files if n in FOR_ZIP_FILENAMES]:
-                    zip_files += [path.join(root, name)]
-        return zip_files
-
-    zip_files = get_zip_files(Path('.'))
-
+    zip_files = _get_zip_files(Path('.'))
     with ZipFile(filename if filename.endswith('.zip') else filename, 'w') as zip_object:
         for file in zip_files:
             zip_object.write(file, file)
