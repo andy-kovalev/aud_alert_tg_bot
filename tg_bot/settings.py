@@ -15,7 +15,7 @@ import logging
 from os import path, getenv
 
 from env_settings import configure, load_env_params
-from env_settings import get_str_env_param
+from env_settings import get_str_env_param, get_values
 from env_settings.utils import _get_obfuscate_value as get_obfuscate_value
 
 configure(error_handling='exit', do_value_logging=True)
@@ -75,7 +75,7 @@ logging.debug('%s', '-' * 20)
 
 # bot param
 # Токен Telegram бота
-BOT_TOKEN = get_str_env_param('BOT_TOKEN', required=True, do_obfuscate_log_text=True)
+BOT_TOKEN = get_values(get_str_env_param('BOT_TOKEN', required=True, do_obfuscate_log_text=True))[0]
 BOT_TOKEN_OBFUSCATED = get_obfuscate_value('BOT_TOKEN')
 
 logging.debug('%s', '-' * 20)
