@@ -1,7 +1,5 @@
-import logging
 from os import environ, path
 from types import MethodType, FunctionType, ModuleType
-from unittest.mock import patch
 
 import pytest
 
@@ -19,15 +17,9 @@ def default_test_settings() -> dict:
     (например для вычислимых параметров)
     :return: словарь параметров со значениями по умолчанию
     """
-    return {"ENV_FILENAME": ".env",
-            "LOG_FILE_NAME": path.abspath("aud_alert_tg_bot.log"),
-            "LOG_LEVEL": EXCLUDE_PARAM,
-            "LOG_FORMAT": EXCLUDE_PARAM,
-            "BOT_TOKEN": "",
-            "BOT_TOKEN_OBFUSCATED": EXCLUDE_PARAM,
-            "ADMINS": [],
-            "DOWN_COMMAND": "",
-            "UP_COMMAND": ""}
+    return {"ENV_FILENAME": ".env", "LOG_FILE_NAME": path.abspath("aud_alert_tg_bot.log"), "LOG_LEVEL": EXCLUDE_PARAM,
+            "LOG_FORMAT": EXCLUDE_PARAM, "BOT_TOKEN": "", "BOT_TOKEN_OBFUSCATED": EXCLUDE_PARAM, "ADMINS": [],
+            "DOWN_COMMAND": "", "UP_COMMAND": ""}
 
 
 @pytest.fixture(autouse=True)
@@ -45,10 +37,11 @@ def test_env_settings():
     return env_vars
 
 
-@pytest.mark.parametrize(['db_number', 'address', 'port', 'user', 'password', 'result'], (
-        ('5', 'address.local', '', '', '', 'redis://address.local/5'),
-        ('5', 'address.local', '6379', '', '', 'redis://address.local:6379/5'),
-        ('5', 'address.local', '6379', 'user', 'password', 'redis://user:password@address.local:6379/5')))
+@pytest.mark.parametrize(['db_number', 'address', 'port', 'user', 'password', 'result'],
+                         (('5', 'address.local', '', '', '', 'redis://address.local/5'),
+                          ('5', 'address.local', '6379', '', '', 'redis://address.local:6379/5'),
+                          ('5', 'address.local', '6379', 'user', 'password',
+                           'redis://user:password@address.local:6379/5')))
 def test_get_connect_uri(db_number, address, port, user, password, result):
     connect_uri = settings.get_connect_uri('redis', db_number, address, port, user, password)
 
@@ -58,8 +51,9 @@ def test_get_connect_uri(db_number, address, port, user, password, result):
 def test_settings_params(test_env_settings, default_test_settings):
     env_vars = test_env_settings
 
-    settings_param = [v for v in vars(settings) if not isinstance(getattr(settings, v), (
-        type, MethodType, FunctionType, ModuleType)) and not v.startswith('__') and v != 'environ']
+    settings_param = [v for v in vars(settings) if (
+                not isinstance(getattr(settings, v), (type, MethodType, FunctionType, ModuleType))
+                and not v.startswith('__') and v != 'environ')]
 
     for param in settings_param:
         if param in default_test_settings.keys():
