@@ -16,7 +16,7 @@ from os import path, getenv
 
 from env_settings import configure, load_env_params
 from env_settings import get_str_env_param, get_values
-from env_settings.utils import _get_obfuscate_value as get_obfuscate_value
+from env_settings.utils import get_obfuscate_value
 
 configure(error_handling='exit', do_value_logging=True)
 
@@ -34,23 +34,6 @@ def configure_logging(log_file_name, log_level, log_format):
     handlers.append(console_out)
 
     logging.basicConfig(handlers=handlers, level=log_level, format=log_format)
-
-
-def get_connect_uri(protocol, resource, address, port=None, user=None, password=None) -> str:
-    """
-    Формирует URL для подключения к сервисам
-    :param protocol: протокол подключения (redis, mongodb, http)
-    :param resource: ресурс подключения (db_number, db_name, endpoint)
-    :param address: адрес
-    :param port: порт
-    :param user: имя пользователя
-    :param password: пароль пользователя
-    :return: URI подключения к в формате protocol://[user:password@]address[:port]/resource
-    """
-    user_str = f'{user}{f":{password}" if password else ""}@' if user else ''
-    port_str = f':{port}' if port else ''
-
-    return '%s://%s%s%s/%s' % (protocol, user_str, address, port_str, resource) if address else ''
 
 
 # .env файл для загрузки параметров
